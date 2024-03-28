@@ -22,14 +22,24 @@ use std::sync::Arc;
 
 // Section: wire functions
 
-fn wire_helloWorld_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, String, _>(
+fn wire_sendNotification_impl(
+    port_: MessagePort,
+    summary: impl Wire2Api<String> + UnwindSafe,
+    body: impl Wire2Api<String> + UnwindSafe,
+    icon: impl Wire2Api<String> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
         WrapInfo {
-            debug_name: "helloWorld",
+            debug_name: "sendNotification",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
-        move || move |task_callback| Result::<_, ()>::Ok(helloWorld()),
+        move || {
+            let api_summary = summary.wire2api();
+            let api_body = body.wire2api();
+            let api_icon = icon.wire2api();
+            move |task_callback| sendNotification(api_summary, api_body, api_icon)
+        },
     )
 }
 // Section: wrapper structs
@@ -54,6 +64,13 @@ where
         (!self.is_null()).then(|| self.wire2api())
     }
 }
+
+impl Wire2Api<u8> for u8 {
+    fn wire2api(self) -> u8 {
+        self
+    }
+}
+
 // Section: impl IntoDart
 
 // Section: executor

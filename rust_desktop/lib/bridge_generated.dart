@@ -26,27 +26,39 @@ class RustNotificationImpl implements RustNotification {
   factory RustNotificationImpl.wasm(FutureOr<WasmModule> module) =>
       RustNotificationImpl(module as ExternalLibrary);
   RustNotificationImpl.raw(this._platform);
-  Future<String> helloWorld({dynamic hint}) {
+  Future<void> sendNotification(
+      {required String summary,
+      required String body,
+      required String icon,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_String(summary);
+    var arg1 = _platform.api2wire_String(body);
+    var arg2 = _platform.api2wire_String(icon);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_helloWorld(port_),
-      parseSuccessData: _wire2api_String,
-      parseErrorData: null,
-      constMeta: kHelloWorldConstMeta,
-      argValues: [],
+      callFfi: (port_) =>
+          _platform.inner.wire_sendNotification(port_, arg0, arg1, arg2),
+      parseSuccessData: _wire2api_unit,
+      parseErrorData: _wire2api_FrbAnyhowException,
+      constMeta: kSendNotificationConstMeta,
+      argValues: [summary, body, icon],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHelloWorldConstMeta =>
+  FlutterRustBridgeTaskConstMeta get kSendNotificationConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
-        debugName: "helloWorld",
-        argNames: [],
+        debugName: "sendNotification",
+        argNames: ["summary", "body", "icon"],
       );
 
   void dispose() {
     _platform.dispose();
   }
 // Section: wire2api
+
+  FrbAnyhowException _wire2api_FrbAnyhowException(dynamic raw) {
+    return FrbAnyhowException(raw as String);
+  }
 
   String _wire2api_String(dynamic raw) {
     return raw as String;
@@ -59,9 +71,18 @@ class RustNotificationImpl implements RustNotification {
   Uint8List _wire2api_uint_8_list(dynamic raw) {
     return raw as Uint8List;
   }
+
+  void _wire2api_unit(dynamic raw) {
+    return;
+  }
 }
 
 // Section: api2wire
+
+@protected
+int api2wire_u8(int raw) {
+  return raw;
+}
 
 // Section: finalizer
 
@@ -72,6 +93,17 @@ class RustNotificationPlatform
 
 // Section: api2wire
 
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_String(String raw) {
+    return api2wire_uint_8_list(utf8.encoder.convert(raw));
+  }
+
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_uint_8_list(Uint8List raw) {
+    final ans = inner.new_uint_8_list_0(raw.length);
+    ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
+    return ans;
+  }
 // Section: finalizer
 
 // Section: api_fill_to_wire
@@ -173,19 +205,45 @@ class RustNotificationWire implements FlutterRustBridgeWireBase {
   late final _init_frb_dart_api_dl = _init_frb_dart_api_dlPtr
       .asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
-  void wire_helloWorld(
+  void wire_sendNotification(
     int port_,
+    ffi.Pointer<wire_uint_8_list> summary,
+    ffi.Pointer<wire_uint_8_list> body,
+    ffi.Pointer<wire_uint_8_list> icon,
   ) {
-    return _wire_helloWorld(
+    return _wire_sendNotification(
       port_,
+      summary,
+      body,
+      icon,
     );
   }
 
-  late final _wire_helloWorldPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
-          'wire_helloWorld');
-  late final _wire_helloWorld =
-      _wire_helloWorldPtr.asFunction<void Function(int)>();
+  late final _wire_sendNotificationPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>,
+              ffi.Pointer<wire_uint_8_list>)>>('wire_sendNotification');
+  late final _wire_sendNotification = _wire_sendNotificationPtr.asFunction<
+      void Function(int, ffi.Pointer<wire_uint_8_list>,
+          ffi.Pointer<wire_uint_8_list>, ffi.Pointer<wire_uint_8_list>)>();
+
+  ffi.Pointer<wire_uint_8_list> new_uint_8_list_0(
+    int len,
+  ) {
+    return _new_uint_8_list_0(
+      len,
+    );
+  }
+
+  late final _new_uint_8_list_0Ptr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<wire_uint_8_list> Function(ffi.Int32)>>(
+      'new_uint_8_list_0');
+  late final _new_uint_8_list_0 = _new_uint_8_list_0Ptr
+      .asFunction<ffi.Pointer<wire_uint_8_list> Function(int)>();
 
   void free_WireSyncReturn(
     WireSyncReturn ptr,
@@ -203,6 +261,13 @@ class RustNotificationWire implements FlutterRustBridgeWireBase {
 }
 
 final class _Dart_Handle extends ffi.Opaque {}
+
+final class wire_uint_8_list extends ffi.Struct {
+  external ffi.Pointer<ffi.Uint8> ptr;
+
+  @ffi.Int32()
+  external int len;
+}
 
 typedef DartPostCObjectFnType = ffi.Pointer<
     ffi.NativeFunction<

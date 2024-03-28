@@ -47,17 +47,12 @@ class HomePage extends StatelessWidget {
         title: const Text("Flutter Battery Windows"),
       ),
       body: Center(
-        child: FutureBuilder(
-          // All Rust functions are called as Future's
-          future: api.helloWorld(), // The Rust function we are calling.
-          builder: (context, data) {
-            if (data.hasData) {
-              return Text(data.data!); // The string to display
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+        child: ElevatedButton(
+          onPressed: () async {
+            await api.sendNotification(
+                body: "hello world", icon: "firefox", summary: "We are happy");
           },
+          child: const Text('Send Notification'),
         ),
       ),
     );

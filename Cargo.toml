@@ -10,6 +10,7 @@ crate-type = ["lib", "cdylib", "staticlib"]
 [dependencies]
 anyhow = "1"
 flutter_rust_bridge = "1"
+notify-rust = "4.10.0"
 
 [target.'cfg(target_os = "windows")'.dependencies]
 windows = {version = "0.43.0", features =["Devices_Power", "Win32_Foundation", "Win32_System_Power", "Win32_System_Com", "Foundation", "System_Power"]}

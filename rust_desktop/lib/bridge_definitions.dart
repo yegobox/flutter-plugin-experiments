@@ -9,7 +9,11 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class RustNotification {
-  Future<String> helloWorld({dynamic hint});
+  Future<void> sendNotification(
+      {required String summary,
+      required String body,
+      required String icon,
+      dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kHelloWorldConstMeta;
+  FlutterRustBridgeTaskConstMeta get kSendNotificationConstMeta;
 }
