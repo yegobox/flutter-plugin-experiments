@@ -16,6 +16,8 @@ cmake_policy(VERSION 3.14...3.25)
 # not be changed
 set(PLUGIN_NAME "flipper_notification_plugin")
 
+include(./rust.cmake)
+
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
   "flipper_notification_plugin.cpp"
@@ -98,3 +100,7 @@ add_custom_command(TARGET ${TEST_RUNNER} POST_BUILD
 include(GoogleTest)
 gtest_discover_tests(${TEST_RUNNER})
 endif()
+
+
+# flutter_rust_bridge_codegen --rust-input ./src/api.rs --dart-output ./rust_desktop/lib/bridge_generated.dart --dart-decl-output ./rust_desktop/lib/bridge_definitions.dart
+# flutter_rust_bridge_codegen --rust-input ./src/api.rs --dart-output ./flipper_notification/lib/bridge_generated.dart --dart-decl-output ./flipper_notification/lib/bridge_definitions.dart
