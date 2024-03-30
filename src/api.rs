@@ -5,7 +5,11 @@ use notify_rust::Notification;
 pub fn sendNotification(summary: String, body: String, icon: String) -> Result<()> {
     let mut notification = Notification::new();
 
-    notification.summary(&summary).body(&body).icon(&icon);
+    notification
+        .summary(&summary)
+        .body(&body)
+        .appname("flipper")
+        .icon(&icon);
 
     match notification.show() {
         Ok(_) => println!("Notification shown successfully"),
@@ -18,11 +22,7 @@ pub fn sendNotification(summary: String, body: String, icon: String) -> Result<(
     Ok(())
 }
 
-// fn main() -> Result<(), Box<dyn std::error::Error>> {
-//     send_notification("Firefox News", "This will almost look like a real Firefox notification.", "firefox")?;
-//     Ok(())
-// }
-// #[allow(non_snake_case)]
-// pub fn helloWorld() -> String {
-//     String::from("Hello from Rust! 🦀")
-// }
+// implement test to the above
+// https://matejknopp.com/post/flutter_plugin_in_rust_with_no_prebuilt_binaries/
+// https://github.com/flutter/flutter/issues/112677
+// https://blog.logrocket.com/using-flutter-rust-bridge-cross-platform-development/

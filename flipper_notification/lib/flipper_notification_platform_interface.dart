@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'flipper_notification_method_channel.dart';
+import 'package:flipper_notification/native.dart';
 
 abstract class FlipperNotificationPlatform extends PlatformInterface {
   /// Constructs a FlipperNotificationPlatform.
@@ -8,7 +9,8 @@ abstract class FlipperNotificationPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlipperNotificationPlatform _instance = MethodChannelFlipperNotification();
+  static FlipperNotificationPlatform _instance =
+      MethodChannelFlipperNotification();
 
   /// The default instance of [FlipperNotificationPlatform] to use.
   ///
@@ -25,5 +27,11 @@ abstract class FlipperNotificationPlatform extends PlatformInterface {
 
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<void> sendNotification(
+      String summary, String body, String icon) async {
+    // send notification from rust based package
+    await api.sendNotification(summary: summary, body: body, icon: icon);
   }
 }

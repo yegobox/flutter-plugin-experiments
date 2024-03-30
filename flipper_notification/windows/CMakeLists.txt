@@ -16,7 +16,8 @@ cmake_policy(VERSION 3.14...3.25)
 # not be changed
 set(PLUGIN_NAME "flipper_notification_plugin")
 
-include(./rust.cmake)
+# Pause rust experiment in a standart plugin
+# include(./rust.cmake)
 
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES

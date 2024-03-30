@@ -28,3 +28,5 @@ flutter:
     platforms:
       windows:
         pluginClass: FlipperNotificationPluginCApi
+        # A plugin can have both FFI and method channels:
+        ffiPlugin: true

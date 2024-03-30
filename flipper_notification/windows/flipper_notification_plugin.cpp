@@ -13,6 +13,8 @@
 #include <memory>
 #include <sstream>
 
+#include "wintoastlib.h"
+
 namespace flipper_notification {
 
 // static

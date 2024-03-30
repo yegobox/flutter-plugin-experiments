@@ -14,7 +14,9 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Corrosion)
 
-corrosion_import_crate(MANIFEST_PATH ../../Cargo.toml IMPORTED_CRATES imported_crates)
+# corrosion_import_crate(MANIFEST_PATH ../../Cargo.toml IMPORTED_CRATES imported_crates)
+get_filename_component(PARENT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../" ABSOLUTE)
+corrosion_import_crate(MANIFEST_PATH "${PARENT_DIR}/Cargo.toml" IMPORTED_CRATES imported_crates)
 
 # Flutter-specific
 

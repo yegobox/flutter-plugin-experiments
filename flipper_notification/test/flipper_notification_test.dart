@@ -7,13 +7,19 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockFlipperNotificationPlatform
     with MockPlatformInterfaceMixin
     implements FlipperNotificationPlatform {
-
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<void> sendNotification(
+      String summary, String body, String icon) async {
+    // TODO: implement showNotification
+  }
 }
 
 void main() {
-  final FlipperNotificationPlatform initialPlatform = FlipperNotificationPlatform.instance;
+  final FlipperNotificationPlatform initialPlatform =
+      FlipperNotificationPlatform.instance;
 
   test('$MethodChannelFlipperNotification is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelFlipperNotification>());
@@ -21,7 +27,8 @@ void main() {
 
   test('getPlatformVersion', () async {
     FlipperNotification flipperNotificationPlugin = FlipperNotification();
-    MockFlipperNotificationPlatform fakePlatform = MockFlipperNotificationPlatform();
+    MockFlipperNotificationPlatform fakePlatform =
+        MockFlipperNotificationPlatform();
     FlipperNotificationPlatform.instance = fakePlatform;
 
     expect(await flipperNotificationPlugin.getPlatformVersion(), '42');
